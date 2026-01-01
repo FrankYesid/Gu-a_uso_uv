@@ -1,0 +1,172 @@
+[project]
+name = "mi-proyecto-python"
+version = "0.1.0"
+description = "Descripción breve del proyecto"
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+authors = [
+    {name = "Tu Nombre", email = "tu.email@ejemplo.com"},
+]
+keywords = ["python", "ml", "data-science"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+# Dependencias principales del proyecto
+dependencies = [
+    "numpy>=1.24.0,<2.0.0",
+    "pandas>=2.0.0,<3.0.0",
+    "scikit-learn>=1.3.0,<2.0.0",
+]
+
+# Dependencias opcionales (grupos)
+[project.optional-dependencies]
+# Dependencias de desarrollo
+dev = [
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "black>=23.0.0",
+    "isort>=5.12.0",
+    "flake8>=6.1.0",
+    "mypy>=1.5.0",
+]
+
+# Dependencias para Machine Learning
+ml = [
+    "torch>=2.0.0",
+    "tensorflow>=2.13.0",
+    "xgboost>=2.0.0",
+    "lightgbm>=4.0.0",
+]
+
+# Dependencias para GPU (si aplica)
+gpu = [
+    "torch[cuda]>=2.0.0",
+    "tensorflow[and-cuda]>=2.13.0",
+]
+
+# Dependencias para notebooks
+notebooks = [
+    "jupyter>=1.0.0",
+    "jupyterlab>=4.0.0",
+    "ipykernel>=6.25.0",
+    "matplotlib>=3.7.0",
+    "seaborn>=0.12.0",
+    "plotly>=5.17.0",
+]
+
+# Dependencias para MLflow
+mlflow = [
+    "mlflow>=2.8.0",
+    "psycopg2-binary>=2.9.0",  # Para backend de MLflow con PostgreSQL
+]
+
+# Todas las dependencias opcionales
+all = [
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "black>=23.0.0",
+    "isort>=5.12.0",
+    "flake8>=6.1.0",
+    "mypy>=1.5.0",
+    "jupyter>=1.0.0",
+    "jupyterlab>=4.0.0",
+    "torch>=2.0.0",
+    "tensorflow>=2.13.0",
+    "mlflow>=2.8.0",
+]
+
+# Scripts ejecutables (opcional)
+[project.scripts]
+mi-script = "mi_proyecto.cli:main"
+
+# URLs del proyecto (opcional)
+[project.urls]
+Homepage = "https://github.com/usuario/mi-proyecto"
+Documentation = "https://github.com/usuario/mi-proyecto/docs"
+Repository = "https://github.com/usuario/mi-proyecto"
+Issues = "https://github.com/usuario/mi-proyecto/issues"
+
+# Configuración de herramientas de desarrollo
+[tool.black]
+line-length = 88
+target-version = ['py311']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | venv
+  | _build
+  | buck-out
+  | build
+  | dist
+)/
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 88
+known_first_party = ["mi_proyecto"]
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "--strict-markers",
+    "--cov=src",
+    "--cov-report=html",
+    "--cov-report=term-missing",
+]
+
+[tool.coverage.run]
+source = ["src"]
+omit = [
+    "*/tests/*",
+    "*/test_*.py",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+]
+
+# Configuración de build (opcional)
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+# Notas sobre este archivo:
+# - Este es un ejemplo completo de pyproject.toml
+# - Adapta las dependencias a las necesidades de tu proyecto
+# - Las versiones mostradas son ejemplos, verifica las versiones actuales
+# - Los grupos opcionales permiten instalar solo lo necesario:
+#   - uv sync --extra dev (solo desarrollo)
+#   - uv sync --extra ml (solo ML)
+#   - uv sync --extra all (todo)
+
