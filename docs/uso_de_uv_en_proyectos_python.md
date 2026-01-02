@@ -125,6 +125,93 @@ winget install --id=astral-sh.uv -e
 scoop install uv
 ```
 
+#### Solución de problemas: "uv no se reconoce como cmdlet"
+
+Si después de instalar `uv` aparece el error:
+
+```
+uv : El término 'uv' no se reconoce como nombre de un cmdlet
+```
+
+Esto significa que `uv` no está en el PATH del sistema. Sigue estos pasos:
+
+**1. Verificar si `uv` está instalado:**
+
+```powershell
+where uv
+```
+
+- Si **no aparece nada**: `uv` no está instalado. Instálalo usando la Opción 1 (PowerShell como Administrador).
+- Si **aparece una ruta**: El problema es que el PATH no se ha recargado en la sesión actual.
+
+**2. Instalación correcta (recomendada):**
+
+Ejecuta PowerShell **como Administrador** y luego:
+
+```powershell
+irm https://astral.sh/uv/install.ps1 | iex
+```
+
+Este comando:
+- Descarga `uv`
+- Lo instala en tu usuario
+- Agrega automáticamente `uv` al PATH
+
+⚠️ **IMPORTANTE**: Después de la instalación, **DEBES cerrar PowerShell y abrirlo de nuevo** para que el PATH se recargue.
+
+**3. Verificar instalación:**
+
+Abre una **nueva ventana de PowerShell** y ejecuta:
+
+```powershell
+uv --version
+```
+
+Si ves algo como `uv 0.x.x`, la instalación fue exitosa.
+
+**4. Si sigue sin funcionar (solución manual de PATH):**
+
+Si el comando anterior sigue fallando, agrega `uv` al PATH manualmente:
+
+1. Presiona `Win + R`
+2. Escribe `sysdm.cpl` y presiona Enter
+3. Ve a la pestaña **Opciones avanzadas**
+4. Click en **Variables de entorno**
+5. En **Variables de usuario**, selecciona `Path` y haz click en **Editar**
+6. Agrega la ruta típica de instalación: `C:\Users\TU_USUARIO\.cargo\bin`
+   (Reemplaza `TU_USUARIO` con tu nombre de usuario)
+7. Acepta todos los diálogos
+8. **Cierra y abre PowerShell de nuevo**
+9. Prueba: `uv --version`
+
+**5. Verificación completa:**
+
+Ejecuta estos comandos para verificar que todo funciona:
+
+```powershell
+uv --version
+uv python list
+```
+
+Si ambos funcionan, tu entorno está listo.
+
+**Errores comunes a evitar:**
+
+| Error | Causa | Solución |
+|-------|-------|----------|
+| Ejecutar `uv` sin reiniciar PowerShell | PATH no recargado | Cerrar y abrir PowerShell |
+| Instalar sin permisos de administrador | No se copia el binario | Ejecutar PowerShell como Administrador |
+| Usar CMD antiguo | PowerShell es necesario | Usar PowerShell moderno |
+| Tener Python Store activo | Puede interferir | Desactivar o usar `uv` directamente |
+
+**Recomendación profesional:**
+
+Para proyectos de Machine Learning y MLOps:
+- Usa **solo `uv`** como herramienta principal
+- Evita mezclar con `conda`, `pyenv` o `virtualenv`
+- Define siempre `.python-version` y `uv.lock` en tu proyecto
+- Esto evita el 90% de errores comunes en entornos ML
+
 ### 2.2 Instalación en Linux
 
 #### Opción 1: Script de instalación (Recomendado)
@@ -1557,6 +1644,130 @@ ERROR: Could not find a version that satisfies the requirement package-x
    ```
 
 ### 10.4 Problemas en Windows
+
+#### Problema: "uv no se reconoce como cmdlet"
+
+**Error:**
+```
+uv : El término 'uv' no se reconoce como nombre de un cmdlet, función, archivo de script o programa ejecutable.
+```
+
+**Causa:**
+
+Este error significa que `uv` no está instalado o su ruta no está en el PATH del sistema. Windows no puede encontrar el ejecutable de `uv`.
+
+**Solución paso a paso:**
+
+**1. Verificar si `uv` está instalado:**
+
+```powershell
+where uv
+```
+
+- Si **no aparece nada**: `uv` no está instalado. Procede con la instalación.
+- Si **aparece una ruta**: El problema es que el PATH no se ha recargado en la sesión actual.
+
+**2. Instalación correcta (recomendada):**
+
+Ejecuta PowerShell **como Administrador** y luego:
+
+```powershell
+irm https://astral.sh/uv/install.ps1 | iex
+```
+
+Este comando:
+- Descarga `uv` automáticamente
+- Lo instala en tu directorio de usuario
+- Agrega automáticamente `uv` al PATH del sistema
+
+⚠️ **IMPORTANTE**: Después de ejecutar el comando de instalación, **DEBES cerrar PowerShell completamente y abrir una nueva ventana** para que el PATH se recargue.
+
+**3. Verificar instalación:**
+
+Abre una **nueva ventana de PowerShell** (no la misma donde instalaste) y ejecuta:
+
+```powershell
+uv --version
+```
+
+Si ves algo como:
+```
+uv 0.x.x
+```
+
+✅ `uv` está correctamente instalado.
+
+**4. Si sigue sin funcionar (solución manual de PATH):**
+
+Si después de reiniciar PowerShell el comando sigue fallando, agrega `uv` al PATH manualmente:
+
+**4.1. Ubicación típica de `uv` en Windows:**
+
+Normalmente se instala en:
+```
+C:\Users\TU_USUARIO\.cargo\bin
+```
+
+(Reemplaza `TU_USUARIO` con tu nombre de usuario de Windows)
+
+**4.2. Agregar al PATH manualmente:**
+
+1. Presiona `Win + R`
+2. Escribe `sysdm.cpl` y presiona Enter
+3. Ve a la pestaña **Opciones avanzadas**
+4. Click en **Variables de entorno**
+5. En la sección **Variables de usuario**, busca `Path` y haz click en **Editar**
+6. Click en **Nuevo** y agrega: `C:\Users\TU_USUARIO\.cargo\bin`
+   (Reemplaza `TU_USUARIO` con tu nombre de usuario)
+7. Click en **Aceptar** en todos los diálogos
+8. **Cierra completamente PowerShell y ábrelo de nuevo**
+9. Prueba: `uv --version`
+
+**5. Verificación completa:**
+
+Ejecuta estos comandos para verificar que todo funciona correctamente:
+
+```powershell
+uv --version
+uv python list
+```
+
+Si ambos comandos funcionan sin errores, tu entorno está completamente configurado.
+
+**6. Errores comunes a evitar:**
+
+| Error | Causa | Solución |
+|-------|-------|----------|
+| Ejecutar `uv` sin reiniciar PowerShell | PATH no recargado en la sesión actual | Cerrar y abrir PowerShell de nuevo |
+| Instalar sin permisos de administrador | El binario no se copia correctamente | Ejecutar PowerShell como Administrador |
+| Usar CMD antiguo en lugar de PowerShell | CMD puede no reconocer el PATH actualizado | Usar PowerShell moderno |
+| Tener Python Store activo | Puede interferir con la detección de `uv` | Desactivar Python Store o usar `uv` directamente |
+
+**7. Recomendación profesional:**
+
+Para proyectos de Machine Learning y MLOps:
+- Usa **solo `uv`** como herramienta principal
+- Evita mezclar con `conda`, `pyenv` o `virtualenv`
+- Define siempre `.python-version` y `uv.lock` en tu proyecto
+- Esto evita el 90% de errores comunes en entornos ML
+
+**8. Próximo paso sugerido:**
+
+Una vez que `uv` funcione correctamente, puedes configurar tu proyecto:
+
+```powershell
+# Instalar una versión específica de Python
+uv python install 3.11
+
+# Fijar la versión para el proyecto
+echo "3.11" > .python-version
+
+# Crear entorno virtual
+uv venv
+
+# Verificar que todo funciona
+uv run python --version
+```
 
 #### Problema: Error de permisos
 
